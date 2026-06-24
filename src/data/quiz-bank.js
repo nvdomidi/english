@@ -1,0 +1,148 @@
+import { makeQuiz } from './_shape.js';
+
+// Standalone practice questions (not tied to a lesson). They enrich the Quizzes
+// tab's topic pools and the mixed review. IDs use a b* prefix to stay unique.
+
+export const quizzes = [
+  // --- Mixed tense review ---
+  ['bq1', 'mixed review', 'She ___ to school every day.', ['go', 'goes', 'going'], 1, 'حال ساده برای he/she با s.'],
+  ['bq2', 'mixed review', 'Look! It ___.', ['rains', 'is raining', 'rained'], 1, 'Look! نشانهٔ حال استمراری.'],
+  ['bq3', 'mixed review', 'They ___ a car last year.', ['buy', 'bought', 'have bought'], 1, 'last year → گذشتهٔ ساده.'],
+  ['bq4', 'mixed review', 'I ___ never been to London.', ['have', 'has', 'am'], 0, 'حال کامل با have.'],
+  ['bq5', 'mixed review', 'We ___ dinner when you called.', ['have', 'were having', 'has'], 1, 'گذشتهٔ استمراری: were + ing.'],
+  ['bq6', 'mixed review', 'He ___ TV every evening.', ['watch', 'watches', 'watching'], 1, 'حال ساده، he → watches.'],
+  ['bq7', 'mixed review', 'I ___ my homework already.', ['finish', 'finished', 'have finished'], 2, 'already → حال کامل.'],
+  ['bq8', 'mixed review', 'Tomorrow I ___ visit my friend.', ['am going to', 'went', 'was'], 0, 'برنامهٔ آینده → going to.'],
+  ['bq9', 'mixed review', 'When I was a child, I ___ play outside.', ['use to', 'used to', 'using'], 1, 'عادت گذشته → used to.'],
+  ['bq10', 'mixed review', 'She can ___ very well.', ['sings', 'sing', 'to sing'], 1, 'بعد از can فعل ساده.'],
+  ['bq11', 'mixed review', '___ you like some coffee?', ['Do', 'Would', 'Are'], 1, 'تعارف مؤدبانه → Would you like.'],
+  ['bq12', 'mixed review', 'There ___ some milk in the fridge.', ['is', 'are', 'be'], 0, 'milk شمارش‌ناپذیر و مفرد → is.'],
+  ['bq13', 'mixed review', 'He has lived here ___ ten years.', ['since', 'for', 'from'], 1, 'مدت‌زمان → for.'],
+  ['bq14', 'mixed review', 'I was tired, ___ I went home.', ['because', 'so', 'but'], 1, 'نتیجه → so.'],
+  ['bq15', 'mixed review', 'This is ___ book I have read. (good)', ['better', 'the best', 'best'], 1, 'برترین → the best.'],
+
+  // --- Vocabulary review ---
+  ['bq16', 'vocabulary', '«مادربزرگ» کدام است؟', ['grandmother', 'mother', 'aunt'], 0, 'grandmother یعنی مادربزرگ.'],
+  ['bq17', 'vocabulary', '«آشپزخانه» کدام است؟', ['bedroom', 'kitchen', 'garden'], 1, 'kitchen یعنی آشپزخانه.'],
+  ['bq18', 'vocabulary', 'متضادِ "cheap" کدام است؟', ['expensive', 'small', 'free'], 0, 'cheap ↔ expensive.'],
+  ['bq19', 'vocabulary', '«پنجشنبه» کدام است؟', ['Tuesday', 'Thursday', 'Sunday'], 1, 'Thursday یعنی پنجشنبه.'],
+  ['bq20', 'vocabulary', '"delicious" یعنی چه؟', ['زشت', 'خوشمزه', 'گران'], 1, 'delicious یعنی خوشمزه.'],
+  ['bq21', 'vocabulary', '«قطار» کدام است؟', ['plane', 'train', 'ship'], 1, 'train یعنی قطار.'],
+  ['bq22', 'vocabulary', '"passport" یعنی چه؟', ['بلیت', 'پاسپورت', 'نقشه'], 1, 'passport یعنی گذرنامه.'],
+  ['bq23', 'vocabulary', 'متضادِ "early" کدام است؟', ['late', 'soon', 'fast'], 0, 'early ↔ late.'],
+  ['bq24', 'vocabulary', '«تخفیف» کدام است؟', ['price', 'discount', 'cash'], 1, 'discount یعنی تخفیف.'],
+  ['bq25', 'vocabulary', '"famous" یعنی چه؟', ['مشهور', 'فقیر', 'ساکت'], 0, 'famous یعنی مشهور.'],
+  ['bq26', 'vocabulary', '«پزشک» کدام است؟', ['nurse', 'doctor', 'driver'], 1, 'doctor یعنی پزشک.'],
+  ['bq27', 'vocabulary', '"weather" یعنی چه؟', ['آب‌وهوا', 'هفته', 'زمان'], 0, 'weather یعنی آب‌وهوا.'],
+  ['bq28', 'vocabulary', 'متضادِ "strong" کدام است؟', ['weak', 'rich', 'safe'], 0, 'strong ↔ weak.'],
+  ['bq29', 'vocabulary', '«ساحل» کدام است؟', ['mountain', 'beach', 'river'], 1, 'beach یعنی ساحل.'],
+  ['bq30', 'vocabulary', '"salary" یعنی چه؟', ['شغل', 'حقوق', 'جلسه'], 1, 'salary یعنی حقوق.'],
+
+  // --- Grammar review ---
+  ['bq31', 'grammar', 'I have ___ orange.', ['a', 'an', 'the'], 1, 'صدای صدادار → an.'],
+  ['bq32', 'grammar', 'جمعِ "woman" کدام است؟', ['womans', 'women', 'womens'], 1, 'بی‌قاعده: woman → women.'],
+  ['bq33', 'grammar', 'This is ___ car. (مالِ من)', ['mine', 'my', 'me'], 1, 'صفت ملکی قبل از اسم → my.'],
+  ['bq34', 'grammar', 'The cat is ___ the table.', ['in', 'on', 'at'], 1, 'روی سطح → on.'],
+  ['bq35', 'grammar', 'My class starts ___ 8 o’clock.', ['in', 'on', 'at'], 2, 'برای ساعت → at.'],
+  ['bq36', 'grammar', 'She runs very ___. (fast)', ['fastly', 'fast', 'faster'], 1, 'fast هم صفت هم قید.'],
+  ['bq37', 'grammar', 'I don’t have ___ sugar.', ['some', 'any', 'many'], 1, 'منفی → any.'],
+  ['bq38', 'grammar', 'He is taller ___ me.', ['then', 'than', 'that'], 1, 'مقایسه با than.'],
+  ['bq39', 'grammar', 'The man ___ called is my uncle.', ['which', 'who', 'where'], 1, 'برای آدم → who.'],
+  ['bq40', 'grammar', 'If it rains, we ___ stay home.', ['will', 'would', 'are'], 0, 'شرطی نوع اول → will.'],
+  ['bq41', 'grammar', '___ do you live?', ['What', 'Where', 'Who'], 1, 'برای مکان → Where.'],
+  ['bq42', 'grammar', 'These ___ my friends.', ['is', 'are', 'was'], 1, 'these جمع → are.'],
+  ['bq43', 'grammar', 'I saw ___ at the shop. (she)', ['she', 'her', 'hers'], 1, 'مفعول → her.'],
+  ['bq44', 'grammar', 'قیدِ "careful" کدام است؟', ['carefuly', 'carefully', 'careful'], 1, 'صفت + ly.'],
+  ['bq45', 'grammar', 'It is ___ hot to drink.', ['very', 'too', 'enough'], 1, 'بیش از حد → too.'],
+
+  // --- to be / have / present ---
+  ['bq46', 'to be', 'My parents ___ at home.', ['is', 'are', 'am'], 1, 'parents جمع → are.'],
+  ['bq47', 'to be', 'It ___ a sunny day.', ['am', 'is', 'are'], 1, 'it → is.'],
+  ['bq48', 'to be', 'منفیِ "I am ready":', ['I not am ready', 'I am not ready', 'I no ready'], 1, 'not بعد از am.'],
+  ['bq49', 'have/has', 'She ___ a beautiful voice.', ['have', 'has', 'is'], 1, 'she → has.'],
+  ['bq50', 'have/has', 'They ___ three children.', ['has', 'have', 'is'], 1, 'they → have.'],
+  ['bq51', 'present simple', 'Water ___ at 100 degrees.', ['boil', 'boils', 'boiling'], 1, 'حقیقت همیشگی، water → boils.'],
+  ['bq52', 'present simple', '___ she like music?', ['Do', 'Does', 'Is'], 1, 'برای she در سؤال → Does.'],
+  ['bq53', 'present continuous', 'They ___ football now.', ['play', 'are playing', 'plays'], 1, 'now → حال استمراری.'],
+  ['bq54', 'present continuous', 'املای "run" با ing:', ['runing', 'running', 'runnning'], 1, 'حرف n دوبار: running.'],
+  ['bq55', 'past simple', 'گذشتهٔ "go" کدام است؟', ['goed', 'went', 'gone'], 1, 'بی‌قاعده: go → went.'],
+
+  // --- Modals & functions ---
+  ['bq56', 'modals', 'You ___ wear a seatbelt. (قانون)', ['should', 'must', 'can'], 1, 'قانون/اجبار → must.'],
+  ['bq57', 'modals', 'It ___ rain later. (احتمال)', ['must', 'might', 'should'], 1, 'احتمال → might.'],
+  ['bq58', 'modals', 'You ___ pay now; you can pay later.', ["mustn't", "don't have to", 'must'], 1, 'لازم نیست → don’t have to.'],
+  ['bq59', 'modals', 'کدام جمله درست است؟', ['She can drives.', 'She can drive.', 'She cans drive.'], 1, 'بعد از can فعل ساده.'],
+  ['bq60', 'modals', 'You look ill. You ___ see a doctor.', ['should', 'must', 'might'], 0, 'توصیه → should.'],
+
+  // --- Phrasal verbs ---
+  ['bq61', 'phrasal verbs', '"give up" یعنی چه؟', ['ادامه دادن', 'تسلیم شدن', 'بلند شدن'], 1, 'give up یعنی تسلیم شدن.'],
+  ['bq62', 'phrasal verbs', 'Please ___ the light; it’s dark.', ['turn off', 'turn on', 'give up'], 1, 'روشن کردن → turn on.'],
+  ['bq63', 'phrasal verbs', '"look for" یعنی چه؟', ['نگاه کردن', 'دنبال چیزی گشتن', 'مراقبت کردن'], 1, 'look for یعنی دنبال چیزی گشتن.'],
+  ['bq64', 'phrasal verbs', 'I ___ at 6 every morning.', ['get up', 'get on', 'give up'], 0, 'بیدار شدن → get up.'],
+  ['bq65', 'phrasal verbs', '"turn off" یعنی چه؟', ['روشن کردن', 'خاموش کردن', 'برداشتن'], 1, 'turn off یعنی خاموش کردن.'],
+
+  // --- Conversation functions ---
+  ['bq66', 'conversation', 'برای تعارف کردن چه می‌گوییم؟', ['Would you like some tea?', 'You want tea?', 'Tea you?'], 0, 'Would you like ...? مؤدبانه است.'],
+  ['bq67', 'conversation', 'پاسخِ "Thank you" کدام است؟', ['You’re welcome.', 'Yes, please.', 'Me too.'], 0, 'پاسخِ تشکر → You’re welcome.'],
+  ['bq68', 'conversation', 'برای پرسیدن قیمت چه می‌گوییم؟', ['How much is it?', 'How many is it?', 'What is much?'], 0, 'How much is it? = چقدر می‌شود.'],
+  ['bq69', 'conversation', '«از آشنایی‌ات خوشحالم» کدام است؟', ['Nice to meet you.', 'Good night.', 'See you.'], 0, 'Nice to meet you هنگام آشنایی.'],
+  ['bq70', 'conversation', 'برای عذرخواهیِ دیر رسیدن:', ['I’m sorry I’m late.', 'I’m late you.', 'Sorry late.'], 0, 'I’m sorry I’m late درست است.'],
+  ['bq71', 'conversation', 'هنگام پرسیدن آدرس:', ['Where is the bank?', 'Where bank is?', 'The bank where?'], 0, 'Where is the ...? درست است.'],
+  ['bq72', 'conversation', 'در رستوران برای سفارش:', ['I’ll have the chicken.', 'I have chicken give.', 'Chicken I want give.'], 0, 'I’ll have the ... برای سفارش.'],
+  ['bq73', 'conversation', 'پاسخِ "How are you?" کدام است؟', ['I’m fine, thanks.', 'Yes, I do.', 'It’s here.'], 0, 'پاسخِ احوال‌پرسی.'],
+  ['bq74', 'conversation', 'پای تلفن خودت را معرفی می‌کنی:', ['This is Ali.', 'I Ali am.', 'Here Ali.'], 0, 'This is ... برای معرفی پای تلفن.'],
+  ['bq75', 'conversation', 'برای خداحافظیِ شب:', ['Good night.', 'Good morning.', 'Hello.'], 0, 'Good night هنگام شب.'],
+
+  // --- More vocabulary ---
+  ['bq76', 'vocabulary', '"hospital" یعنی چه؟', ['هتل', 'بیمارستان', 'خانه'], 1, 'hospital یعنی بیمارستان.'],
+  ['bq77', 'vocabulary', 'متضادِ "clean" کدام است؟', ['dirty', 'empty', 'soft'], 0, 'clean ↔ dirty.'],
+  ['bq78', 'vocabulary', '"street" یعنی چه؟', ['پل', 'خیابان', 'میدان'], 1, 'street یعنی خیابان.'],
+  ['bq79', 'vocabulary', '"minute" یعنی چه؟', ['ساعت', 'دقیقه', 'ثانیه'], 1, 'minute یعنی دقیقه.'],
+  ['bq80', 'vocabulary', 'متضادِ "wet" کدام است؟', ['dry', 'hard', 'full'], 0, 'wet ↔ dry.'],
+  ['bq81', 'vocabulary', '"math" کدام درس است؟', ['تاریخ', 'ریاضی', 'هنر'], 1, 'math یعنی ریاضی.'],
+  ['bq82', 'vocabulary', '"bridge" یعنی چه؟', ['پل', 'ساختمان', 'گوشه'], 0, 'bridge یعنی پل.'],
+  ['bq83', 'vocabulary', 'متضادِ "young" کدام است؟', ['old', 'new', 'big'], 0, 'young ↔ old.'],
+  ['bq84', 'vocabulary', '"weekend" یعنی چه؟', ['روزِ کاری', 'آخر هفته', 'ماه'], 1, 'weekend یعنی آخر هفته.'],
+  ['bq85', 'vocabulary', '"answer" یعنی چه؟', ['پرسیدن', 'پاسخ دادن', 'گفتن'], 1, 'answer یعنی پاسخ دادن.'],
+
+  // --- More grammar ---
+  ['bq86', 'grammar', 'جمعِ "child" کدام است؟', ['childs', 'children', 'childes'], 1, 'بی‌قاعده: children.'],
+  ['bq87', 'grammar', 'She walked ___ the room.', ['into', 'on', 'at'], 0, 'به داخل → into.'],
+  ['bq88', 'grammar', 'I did it ___. (به‌تنهایی)', ['myself', 'by myself', 'me'], 1, 'by myself = به‌تنهایی.'],
+  ['bq89', 'grammar', 'I need ___ advice.', ['an', 'some', 'a'], 1, 'advice ناشمارش → some.'],
+  ['bq90', 'grammar', 'ترتیب درست کدام است؟', ['a red small bag', 'a small red bag', 'a bag red small'], 1, 'اندازه قبل از رنگ.'],
+  ['bq91', 'grammar', 'There ___ a lot of people.', ['is', 'are', 'be'], 1, 'people جمع → are.'],
+  ['bq92', 'grammar', 'He gave the book to ___. (I)', ['I', 'me', 'my'], 1, 'بعد از to شکل مفعولی → me.'],
+  ['bq93', 'grammar', '___ umbrella is this?', ['Who', 'Whose', 'Which'], 1, 'مالکیت → Whose.'],
+  ['bq94', 'grammar', 'I have lived here ___ five years.', ['since', 'for', 'from'], 1, 'مدت → for.'],
+  ['bq95', 'grammar', 'قیدِ "happy" کدام است؟', ['happyly', 'happily', 'happy'], 1, 'y → ily: happily.'],
+
+  // --- More verb practice ---
+  ['bq96', 'mixed review', 'I ___ to the gym every day.', ['go', 'goes', 'going'], 0, 'برای I فعل ساده.'],
+  ['bq97', 'mixed review', 'She ___ her homework now.', ['does', 'is doing', 'did'], 1, 'now → حال استمراری.'],
+  ['bq98', 'mixed review', 'گذشتهٔ "make" کدام است؟', ['maked', 'made', 'make'], 1, 'بی‌قاعده: make → made.'],
+  ['bq99', 'mixed review', 'I ___ going to call you.', ['am', 'is', 'are'], 0, 'برای I → am.'],
+  ['bq100', 'mixed review', 'They have ___ lunch already.', ['have', 'had', 'has'], 1, 'have + قسمت سومِ have = had.'],
+  ['bq101', 'modals', 'I ___ swim when I was five.', ['can', 'could', 'must'], 1, 'تواناییِ گذشته → could.'],
+  ['bq102', 'modals', '___ I open the window?', ['May', 'Do', 'Am'], 0, 'اجازهٔ مؤدبانه → May I.'],
+  ['bq103', 'to be', 'There ___ many cars on the road.', ['is', 'are', 'be'], 1, 'cars جمع → are.'],
+  ['bq104', 'present simple', 'My brother ___ in Canada.', ['live', 'lives', 'living'], 1, 'brother مفرد → lives.'],
+  ['bq105', 'past simple', '___ you sleep well?', ['Do', 'Did', 'Was'], 1, 'سؤالِ گذشته → Did.'],
+
+  // --- More conversation ---
+  ['bq106', 'conversation', 'برای معرفی شغل: I work ___ a teacher.', ['like', 'as', 'for'], 1, 'work as a ...'],
+  ['bq107', 'conversation', 'پاسخِ "Nice to meet you" کدام است؟', ['Nice to meet you too.', 'Yes, I am.', 'Good, thanks.'], 0, 'پاسخِ آشنایی.'],
+  ['bq108', 'conversation', 'سرِ تلفن: "Can I ___ a message?"', ['leave', 'do', 'make'], 0, 'leave a message.'],
+  ['bq109', 'conversation', 'در هتل: "Is breakfast ___?"', ['include', 'included', 'including'], 1, 'مجهول: is included.'],
+  ['bq110', 'conversation', 'برای دعوت: "___ you like to join us?"', ['Do', 'Would', 'Are'], 1, 'Would you like ...?'],
+  ['bq111', 'phrasal verbs', '"wake up" یعنی چه؟', ['خوابیدن', 'بیدار شدن', 'بلند کردن'], 1, 'wake up = بیدار شدن.'],
+  ['bq112', 'phrasal verbs', 'I need to ___ this form. (پر کردن)', ['fill in', 'find out', 'give up'], 0, 'fill in a form.'],
+  ['bq113', 'vocabulary', '"promise" یعنی چه؟', ['پرسیدن', 'قول دادن', 'پاسخ دادن'], 1, 'promise = قول دادن.'],
+  ['bq114', 'vocabulary', '"corner" یعنی چه؟', ['میدان', 'گوشه / نبش', 'خیابان'], 1, 'corner = گوشه.'],
+  ['bq115', 'vocabulary', '"build" یعنی چه؟', ['شکستن', 'ساختن', 'بریدن'], 1, 'build = ساختن.'],
+  ['bq116', 'grammar', 'These shoes are ___. (مالِ من)', ['my', 'mine', 'me'], 1, 'ضمیر ملکیِ تنها → mine.'],
+  ['bq117', 'grammar', 'He runs ___ than me.', ['fast', 'faster', 'fastest'], 1, 'مقایسه → faster.'],
+  ['bq118', 'mixed review', 'Listen! Someone ___ at the door.', ['knocks', 'is knocking', 'knocked'], 1, 'Listen! → حال استمراری.'],
+  ['bq119', 'mixed review', 'We ___ here since 2010.', ['live', 'have lived', 'lived'], 1, 'since → حال کامل.'],
+  ['bq120', 'vocabulary', 'متضادِ "easy" کدام است؟', ['difficult', 'soft', 'free'], 0, 'easy ↔ difficult.'],
+].map(makeQuiz);
