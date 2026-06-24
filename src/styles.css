@@ -16,6 +16,17 @@
   --danger: #e0496a;
   --shadow: 0 18px 40px -24px rgba(54, 33, 120, 0.55);
   --radius: 18px;
+  /* Responsive spacing tokens — shrink on small screens (see media query below). */
+  --pad: 26px;
+  --gap: 24px;
+  --card-pad: 26px;
+  /* Safe-area insets (notch / home indicator); 0 on devices without them. */
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+  /* Height of the mobile bottom tab bar; used to pad content so it isn't hidden. */
+  --bottom-nav-h: 64px;
 }
 
 * {
@@ -61,7 +72,7 @@ h3 {
 .app-shell {
   display: grid;
   grid-template-columns: 264px 1fr;
-  min-height: 100vh;
+  min-height: 100dvh;
   gap: 0;
 }
 
@@ -69,7 +80,7 @@ h3 {
   position: sticky;
   top: 0;
   align-self: start;
-  height: 100vh;
+  height: 100dvh;
   background: var(--surface);
   border-inline-start: 1px solid var(--line);
   padding: 26px 20px;
@@ -161,6 +172,14 @@ h3 {
 .main-content {
   padding: 32px clamp(18px, 4vw, 52px);
   overflow-x: hidden;
+}
+
+/* Mobile chrome (top bar + bottom tab bar + sheet) is hidden on desktop and
+   revealed inside the mobile media query below. */
+.topbar,
+.bottom-nav,
+.more-sheet-backdrop {
+  display: none;
 }
 
 .page {
@@ -365,6 +384,15 @@ h3 {
   max-width: 1180px;
 }
 
+/* Grid items default to min-width:auto, which makes the 1fr track grow to fit
+   intrinsic content (e.g. the horizontal lesson strip or pattern cards) instead
+   of constraining to the viewport. min-width:0 lets the track stay viewport-wide
+   so inner overflow-x:auto scrollers actually scroll. */
+.hero > *,
+.two-column > * {
+  min-width: 0;
+}
+
 .lesson-list {
   display: flex;
   flex-direction: column;
@@ -380,6 +408,12 @@ h3 {
 
 .lesson-list .section-heading {
   margin-bottom: 6px;
+}
+
+.lesson-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .lesson-row {
@@ -696,41 +730,195 @@ h3 {
   color: var(--primary);
 }
 
-/* ---------- Responsive ---------- */
+/* ---------- Mobile top app bar ---------- */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: calc(10px + var(--safe-top)) calc(16px + var(--safe-right)) 10px
+    calc(16px + var(--safe-left));
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+}
+
+.topbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.topbar-brand strong {
+  font-size: 17px;
+  font-weight: 800;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.brand-mark.small {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  font-size: 17px;
+}
+
+.topbar-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 0 0 auto;
+}
+
+.topbar-score {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.topbar-score strong {
+  background: var(--primary-soft);
+  color: var(--primary);
+  padding: 2px 9px;
+  border-radius: 999px;
+}
+
+.topbar-theme {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 11px;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+/* ---------- Mobile bottom tab bar ---------- */
+.bottom-nav {
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 40;
+  align-items: stretch;
+  justify-content: space-around;
+  gap: 2px;
+  padding: 6px calc(6px + var(--safe-right)) calc(6px + var(--safe-bottom))
+    calc(6px + var(--safe-left));
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  backdrop-filter: blur(14px);
+  border-top: 1px solid var(--line);
+}
+
+.bottom-nav-item {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  min-height: 52px;
+  padding: 6px 2px;
+  border: none;
+  background: transparent;
+  border-radius: 12px;
+  color: var(--muted);
+  font-family: inherit;
+  font-size: 10.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+
+.bottom-nav-item span {
+  white-space: nowrap;
+}
+
+.bottom-nav-item.active {
+  color: var(--primary);
+  background: var(--primary-soft);
+}
+
+.bottom-nav-item:active {
+  background: var(--primary-soft);
+}
+
+/* ---------- Mobile "more" sheet ---------- */
+.more-sheet-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: rgba(20, 14, 35, 0.42);
+  align-items: flex-end;
+  animation: fade 0.2s ease;
+}
+
+.more-sheet {
+  width: 100%;
+  background: var(--surface);
+  border-radius: 22px 22px 0 0;
+  padding: 10px 16px calc(18px + var(--safe-bottom) + var(--bottom-nav-h));
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  box-shadow: 0 -18px 40px -24px rgba(0, 0, 0, 0.5);
+  animation: slide-up 0.25s ease;
+}
+
+.more-sheet-handle {
+  width: 42px;
+  height: 5px;
+  border-radius: 999px;
+  background: var(--line);
+  margin: 4px auto 10px;
+}
+
+.more-sheet-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 52px;
+  padding: 12px 14px;
+  border: none;
+  background: transparent;
+  border-radius: 14px;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.more-sheet-item.active {
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+
+.more-sheet-item:active {
+  background: var(--bg);
+}
+
+@keyframes fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slide-up {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+/* ---------- Responsive: tablet ---------- */
 @media (max-width: 920px) {
-  .app-shell {
-    grid-template-columns: 1fr;
-  }
-
-  .sidebar {
-    position: static;
-    height: auto;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 14px;
-    border-inline-start: none;
-    border-bottom: 1px solid var(--line);
-  }
-
-  .nav-list {
-    flex-direction: row;
-    flex-wrap: wrap;
-    flex: 1 1 100%;
-    order: 3;
-  }
-
-  .nav-item {
-    width: auto;
-  }
-
-  .side-score {
-    margin: 0;
-    flex-direction: row;
-    align-items: center;
-    gap: 10px;
-  }
-
   .hero,
   .two-column {
     grid-template-columns: 1fr;
@@ -738,6 +926,159 @@ h3 {
 
   .lesson-list {
     position: static;
+  }
+}
+
+/* ---------- Responsive: phone (bottom-nav layout) ---------- */
+@media (max-width: 720px) {
+  :root {
+    --pad: 16px;
+    --gap: 16px;
+    --card-pad: 18px;
+  }
+
+  /* Swap the sidebar for a top bar + bottom tab bar. */
+  .app-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    display: none;
+  }
+
+  .topbar {
+    display: flex;
+  }
+
+  .bottom-nav {
+    display: flex;
+  }
+
+  .more-sheet-backdrop {
+    display: flex;
+  }
+
+  .main-content {
+    padding: 18px 16px calc(var(--bottom-nav-h) + var(--safe-bottom) + 20px);
+  }
+
+  .page {
+    gap: var(--gap);
+  }
+
+  /* Cards get tighter padding on phones. */
+  .hero,
+  .lesson-detail,
+  .exercise-card,
+  .flashcard,
+  .progress-panel,
+  .quiz-box {
+    padding: var(--card-pad);
+  }
+
+  .hero {
+    border-radius: 20px;
+    gap: 18px;
+  }
+
+  .hero-actions .primary-button,
+  .hero-actions .ghost-button {
+    flex: 1 1 auto;
+  }
+
+  .section-heading h2 {
+    font-size: 21px;
+  }
+
+  /* Horizontal-scroll chip rows instead of tall wrapping blocks. */
+  .chip-row {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 4px;
+    margin-inline: calc(-1 * var(--card-pad));
+    padding-inline: var(--card-pad);
+    scrollbar-width: none;
+  }
+
+  .chip-row::-webkit-scrollbar {
+    display: none;
+  }
+
+  .chip {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+    padding: 10px 16px;
+    font-size: 13.5px;
+  }
+
+  /* Lessons: list becomes a horizontal strip above the detail so you don't
+     scroll past dozens of lessons to reach the content. */
+  .two-column {
+    gap: 14px;
+  }
+
+  .lesson-list {
+    position: static;
+    flex-direction: column;
+  }
+
+  .lesson-list .section-heading {
+    display: none;
+  }
+
+  .lesson-rows {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x proximity;
+    margin-inline: calc(-1 * var(--card-pad));
+    padding-inline: var(--card-pad);
+    scrollbar-width: none;
+  }
+
+  .lesson-rows::-webkit-scrollbar {
+    display: none;
+  }
+
+  .lesson-row {
+    flex: 0 0 auto;
+    width: 200px;
+    scroll-snap-align: start;
+  }
+
+  /* Bigger tap targets on touch screens. */
+  .speak-button {
+    width: 40px;
+    height: 40px;
+  }
+
+  .choice {
+    padding: 14px 15px;
+  }
+
+  .token {
+    padding: 12px 16px;
+    font-size: 16px;
+  }
+
+  .action-row .primary-button,
+  .action-row .success-button,
+  .action-row .warn-button {
+    flex: 1 1 auto;
+  }
+
+  /* Chat bubbles use more of the width on narrow screens. */
+  .bubble {
+    max-width: 90%;
+  }
+
+  /* Hide desktop keyboard hints that have no meaning on touch. */
+  kbd {
+    display: none;
   }
 }
 
