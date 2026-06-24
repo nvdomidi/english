@@ -10,6 +10,7 @@ import {
   Layers3,
   MessagesSquare,
   Moon,
+  MoreHorizontal,
   Play,
   RotateCcw,
   Sparkles,
@@ -51,6 +52,12 @@ const tabs = [
   { id: 'practice', label: 'تمرین', icon: Dumbbell },
   { id: 'progress', label: 'پیشرفت', icon: Trophy },
 ];
+
+// On phones the bottom tab bar shows these primary destinations; the rest live
+// behind the "بیشتر" (more) sheet so 7 items don't get crammed into one row.
+const primaryTabIds = ['home', 'lessons', 'flashcards', 'conversation'];
+const primaryTabs = primaryTabIds.map((id) => tabs.find((tab) => tab.id === id));
+const moreTabs = tabs.filter((tab) => !primaryTabIds.includes(tab.id));
 
 // ---- Text to speech -------------------------------------------------------
 
@@ -105,7 +112,14 @@ function SpeakButton({ text, label = 'شنیدن تلفظ' }) {
 
 function App() {
   const [activeTab, setActiveTab] = useState('home');
+  const [moreOpen, setMoreOpen] = useState(false);
   const [progress, setProgress] = useState(getInitialProgress);
+
+  // Navigate and always close the mobile "more" sheet.
+  const goTo = (tabId) => {
+    setActiveTab(tabId);
+    setMoreOpen(false);
+  };
 
   const updateProgress = (updater) => {
     setProgress((current) => {
@@ -124,6 +138,8 @@ function App() {
   const toggleTheme = () =>
     setProgress((current) => updateSettings(current, { theme: current.settings.theme === 'dark' ? 'light' : 'dark' }));
 
+  const activeLabel = tabs.find((tab) => tab.id === activeTab)?.label || '';
+
   return (
     <div className="app-shell">
       <aside className="sidebar" aria-label="ناوبری اصلی">
@@ -141,7 +157,7 @@ function App() {
               <button
                 className={activeTab === tab.id ? 'nav-item active' : 'nav-item'}
                 key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
+                onClick={() => goTo(tab.id)}
                 type="button"
               >
                 <Icon size={18} />
@@ -162,8 +178,25 @@ function App() {
         </div>
       </aside>
 
+      {/* Mobile-only top app bar: brand + points/streak + theme toggle. */}
+      <header className="topbar" aria-label="نوار بالا">
+        <div className="topbar-brand">
+          <div className="brand-mark small">ف</div>
+          <strong>{activeLabel}</strong>
+        </div>
+        <div className="topbar-meta">
+          <span className="topbar-score">
+            <Flame size={15} /> {stats.streak}
+            <strong>{progress.points}</strong>
+          </span>
+          <button className="topbar-theme" onClick={toggleTheme} type="button" aria-label="تغییر حالت رنگ">
+            {theme === 'dark' ? <Sun size={17} /> : <Moon size={17} />}
+          </button>
+        </div>
+      </header>
+
       <main className="main-content">
-        {activeTab === 'home' && <HomeView progress={progress} stats={stats} setActiveTab={setActiveTab} />}
+        {activeTab === 'home' && <HomeView progress={progress} stats={stats} setActiveTab={goTo} />}
         {activeTab === 'lessons' && <LessonsView progress={progress} updateProgress={updateProgress} />}
         {activeTab === 'flashcards' && <FlashcardsView progress={progress} updateProgress={updateProgress} />}
         {activeTab === 'quizzes' && <QuizzesView progress={progress} updateProgress={updateProgress} />}
@@ -181,6 +214,61 @@ function App() {
           />
         )}
       </main>
+
+      {/* Mobile-only bottom tab bar. */}
+      <nav className="bottom-nav" aria-label="ناوبری پایین">
+        {primaryTabs.map((tab) => {
+          const Icon = tab.icon;
+          return (
+            <button
+              className={activeTab === tab.id ? 'bottom-nav-item active' : 'bottom-nav-item'}
+              key={tab.id}
+              onClick={() => goTo(tab.id)}
+              type="button"
+            >
+              <Icon size={22} />
+              <span>{tab.label}</span>
+            </button>
+          );
+        })}
+        <button
+          className={
+            moreOpen || moreTabs.some((tab) => tab.id === activeTab)
+              ? 'bottom-nav-item active'
+              : 'bottom-nav-item'
+          }
+          onClick={() => setMoreOpen((open) => !open)}
+          type="button"
+          aria-expanded={moreOpen}
+        >
+          <MoreHorizontal size={22} />
+          <span>بیشتر</span>
+        </button>
+      </nav>
+
+      {/* "More" bottom sheet for the secondary destinations. */}
+      {moreOpen && (
+        <div className="more-sheet-backdrop" onClick={() => setMoreOpen(false)}>
+          <div className="more-sheet" onClick={(event) => event.stopPropagation()} role="menu">
+            <div className="more-sheet-handle" />
+            {moreTabs.map((tab) => {
+              const Icon = tab.icon;
+              return (
+                <button
+                  className={activeTab === tab.id ? 'more-sheet-item active' : 'more-sheet-item'}
+                  key={tab.id}
+                  onClick={() => goTo(tab.id)}
+                  type="button"
+                  role="menuitem"
+                >
+                  <Icon size={20} />
+                  {tab.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -305,23 +393,25 @@ function LessonsView({ progress, updateProgress }) {
         <small className="lesson-list-progress">
           {doneInCategory} از {visibleLessons.length} درس این بخش کامل شده
         </small>
-        {visibleLessons.map((lesson, index) => {
-          const done = progress.completedLessons.includes(lesson.id);
-          return (
-            <button
-              className={lesson.id === selectedId ? 'lesson-row active' : 'lesson-row'}
-              key={lesson.id}
-              onClick={() => setSelectedId(lesson.id)}
-              type="button"
-            >
-              <span className={done ? 'lesson-number done' : 'lesson-number'}>{done ? '✓' : index + 1}</span>
-              <span>
-                <strong>{lesson.titleFa}</strong>
-                <small>{lesson.level}</small>
-              </span>
-            </button>
-          );
-        })}
+        <div className="lesson-rows">
+          {visibleLessons.map((lesson, index) => {
+            const done = progress.completedLessons.includes(lesson.id);
+            return (
+              <button
+                className={lesson.id === selectedId ? 'lesson-row active' : 'lesson-row'}
+                key={lesson.id}
+                onClick={() => setSelectedId(lesson.id)}
+                type="button"
+              >
+                <span className={done ? 'lesson-number done' : 'lesson-number'}>{done ? '✓' : index + 1}</span>
+                <span>
+                  <strong>{lesson.titleFa}</strong>
+                  <small>{lesson.level}</small>
+                </span>
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       <article className="lesson-detail">
